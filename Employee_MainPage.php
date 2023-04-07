@@ -59,9 +59,7 @@ switch ($action) {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process the submitted form
-            $stmt = $conn->prepare("UPDATE employee SET first_name=?, last_name=?, date_of_birth=?, phone=?, address=?, city=?, province=?, postal_code=?, citizenship=?, email=?, medicare=?, role=? WHERE ID=?");
-            $stmt->bind_param("sssiissssiisi", $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role, $id);
-
+            
             $first_name = $_POST['first_name'];
             $last_name = $_POST['last_name'];
             $date_of_birth = $_POST['date_of_birth'];
@@ -74,6 +72,10 @@ switch ($action) {
             $email = $_POST['email'];
             $medicare = $_POST['medicare'];
             $role = $_POST['role'];
+            
+            $stmt = $conn->prepare("UPDATE employee SET first_name=?, last_name=?, date_of_birth=?, phone=?, address=?, city=?, province=?, postal_code=?, citizenship=?, email=?, medicare=?, role=? WHERE ID=?");
+            $stmt->bind_param("sssiisssssisi", $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role, $id);
+
 
             if ($stmt->execute()) {
                 echo "Employee updated successfully";
@@ -101,6 +103,46 @@ switch ($action) {
                 <h1>Edit Employee</h1>
                 <form action="?action=edit&id=<?php echo $id; ?>" method="post">
                     <!-- Your form fields with fetched data here -->
+                    
+                        <label for="first_name">First Name: </label>
+                        <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" required><br>
+
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="<?php echo $employee['last_name']; ?>" required><br>
+
+                        <label for="date_of_birth">Date of Birth:</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo $employee['date_of_birth']; ?>" required><br>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="<?php echo $employee['email']; ?>" required><br>
+
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" value="<?php echo $employee['phone']; ?>" required><br>
+
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" value="<?php echo $employee['address']; ?>" required><br>
+
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" value="<?php echo $employee['city']; ?>" required><br>
+
+                        <label for="province">Province:</label>
+                        <input type="text" id="province" name="province" value="<?php echo $employee['province']; ?>" required><br>
+
+                        <label for="postal_code">Postal Code:</label>
+                        <input type="text" id="postal_code" name="postal_code" value="<?php echo $employee['postal_code']; ?>" required><br>
+
+                        <label for="citizenship">Citizenship:</label>
+                        <input type="text" id="citizenship" name="citizenship" value="<?php echo $employee['citizenship']; ?>" required><br>
+
+                        <label for="medicare">Medicare:</label>
+                        <input type="text" id="medicare" name="medicare" value="<?php echo $employee['medicare']; ?>" required><br>
+
+                        <label for="role">Role:</label>
+                        <input type="text" id="role" name="role" value="<?php echo $employee['role']; ?>" required><br>
+
+                        
+
+
                     <button type="submit">Update Employee</button>
                 </form>
             </body>
@@ -138,9 +180,9 @@ switch ($action) {
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            echo "<table><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Role</th><th>Action</th></tr>";
+            echo "<table><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Medicare</th><th>Role</th><th>Action</th></tr>";
             while ($row = $result->fetch_assoc()) {
-                echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["role"] . "</td><td><a href='?action=edit&id=" . $row["ID"] . "'>Edit</a> | <a href='?action=delete&id=" . $row["ID"] . "'>Delete</a></td></tr>";
+                echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["medicare"] . "</td><td>" . $row["role"] . "</td><td><a href='?action=edit&id=" . $row["ID"] . "'>Edit</a> | <a href='?action=delete&id=" . $row["ID"] . "'>Delete</a></td></tr>";
             }
             echo "</table>";
         } else {
