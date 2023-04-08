@@ -29,7 +29,7 @@ echo '<th> Delete </th>';
 }
 echo "</table>";
 
-// For a given employee, get the details of all the schedules she/he has been scheduled during a specific period of time. Details include facility name, day of the year, start time and end time. Results should be displayed sorted in ascending order by facility name, then by day of the year, the by start time.
+// 8. For a given employee, get the details of all the schedules she/he has been scheduled during a specific period of time. Details include facility name, day of the year, start time and end time. Results should be displayed sorted in ascending order by facility name, then by day of the year, the by start time.
 
 // $employee_id = 1; // Replace this with the specific employee ID you want to fetch schedules for
 // $start_date = '2020-01-01'; // Replace with the start date of the specific period
