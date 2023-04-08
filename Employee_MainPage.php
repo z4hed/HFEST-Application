@@ -105,7 +105,7 @@ switch ($action) {
                     <!-- Your form fields with fetched data here -->
                     
                         <label for="first_name">First Name: </label>
-                        <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" required><br>
+                        <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" required style="border: 1px solid pink; padding: 5px;">><br>
 
                         <label for="last_name">Last Name:</label>
                         <input type="text" id="last_name" name="last_name" value="<?php echo $employee['last_name']; ?>" required><br>
