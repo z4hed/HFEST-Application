@@ -94,59 +94,74 @@ switch ($action) {
 
             // Display the form with fetched details
             ?>
+           
+
+
+
             <!DOCTYPE html>
             <html>
             <head>
                 <title>Edit Employee</title>
+                 <style>
+                    body {
+                        background-color:#C0C0C0;
+                    }
+                </style>
             </head>
             <body>
+                <div style="text-align:center;">
                 <h1>Edit Employee</h1>
                 <form action="?action=edit&id=<?php echo $id; ?>" method="post">
                     <!-- Your form fields with fetched data here -->
                     
-                        <label for="first_name">First Name: </label>
-                        <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" required style="border: 1px solid pink; padding: 5px;">><br>
+            <label for="first_name" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">First Name: </label>
+            <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" style="display: inline-block; width: 200px;" required><br>
+                    
+      
+            <label for="last_name" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" value="<?php echo $employee['last_name']; ?>" style="display: inline-block; width: 200px; " required><br>
 
-                        <label for="last_name">Last Name:</label>
-                        <input type="text" id="last_name" name="last_name" value="<?php echo $employee['last_name']; ?>" required><br>
+            <label for="date_of_birth" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">Date of Birth:</label>
+            <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo $employee['date_of_birth']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="date_of_birth">Date of Birth:</label>
-                        <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo $employee['date_of_birth']; ?>" required><br>
+            <label for="email" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">Email:</label>
+            <input type="email" id="email" name="email" value="<?php echo $employee['email']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email" value="<?php echo $employee['email']; ?>" required><br>
+            <label for="phone" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">Phone:</label>
+            <input type="text" id="phone" name="phone" value="<?php echo $employee['phone']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="phone">Phone:</label>
-                        <input type="text" id="phone" name="phone" value="<?php echo $employee['phone']; ?>" required><br>
+            <label for="address" style="display: inline-block; width: 100px; text-align: left;background-color: powderblue;border-style: solid;">Address:</label>
+            <input type="text" id="address" name="address" value="<?php echo $employee['address']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="address">Address:</label>
-                        <input type="text" id="address" name="address" value="<?php echo $employee['address']; ?>" required><br>
+            <label for="city" style="display: inline-block; width: 100px; text-align: left;background-color: powderblue;border-style: solid;">City:</label>
+            <input type="text" id="city" name="city" value="<?php echo $employee['city']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="city">City:</label>
-                        <input type="text" id="city" name="city" value="<?php echo $employee['city']; ?>" required><br>
+            <label for="province" style="display: inline-block; width: 100px; text-align: left;background-color: powderblue;border-style: solid;">Province:</label>
+            <input type="text" id="province" name="province" value="<?php echo $employee['province']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="province">Province:</label>
-                        <input type="text" id="province" name="province" value="<?php echo $employee['province']; ?>" required><br>
+            <label for="postal_code" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">Postal Code:</label>
+            <input type="text" id="postal_code" name="postal_code" value="<?php echo $employee['postal_code']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="postal_code">Postal Code:</label>
-                        <input type="text" id="postal_code" name="postal_code" value="<?php echo $employee['postal_code']; ?>" required><br>
+            <label for="citizenship" style="display: inline-block; width: 100px; text-align:left;background-color: powderblue;border-style: solid;">Citizenship:</label>
+            <input type="text" id="citizenship" name="citizenship" value="<?php echo $employee['citizenship']; ?>" style="display: inline-block; width: 200px;" required><br>
 
-                        <label for="citizenship">Citizenship:</label>
-                        <input type="text" id="citizenship" name="citizenship" value="<?php echo $employee['citizenship']; ?>" required><br>
-
-                        <label for="medicare">Medicare:</label>
-                        <input type="text" id="medicare" name="medicare" value="<?php echo $employee['medicare']; ?>" required><br>
-
-                        <label for="role">Role:</label>
-                        <input type="text" id="role" name="role" value="<?php echo $employee['role']; ?>" required><br>
-
-                        
+            <label for="medicare" style="display: inline-block; width: 100px; text-align: left;background-color: powderblue;border-style: solid;">Medicare:</label>
+            <input type="text" id="medicare" name="medicare" value="<?php echo $employee['medicare']; ?>" style="display: inline-block; width: 200px;" required><br>
 
 
-                    <button type="submit">Update Employee</button>
+
+
+
+             <button type="submit" style="background-color: powderblue; color: black; padding: 15px 25px; border: solid; border-radius: 5px; margin-top: 25px;">Update Employee</button>
+
+
+                    
                 </form>
+                 </div>
             </body>
             </html>
+
+
             <?php
         }
     } else {
