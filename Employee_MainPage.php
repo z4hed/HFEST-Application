@@ -10,9 +10,13 @@ switch ($action) {
     case 'create':
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process the submitted form
-            $stmt = $conn->prepare("INSERT INTO employee (first_name, last_name, date_of_birth, phone, address, city, province, postal_code, citizenship, email, medicare, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssiissssiis", $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role);
+            $sql = "SELECT max(ID) as max FROM employee";
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $id = 1+$row["max"];
 
+            
+            
             $first_name = $_POST['first_name'];
             $last_name = $_POST['last_name'];
             $date_of_birth = $_POST['date_of_birth'];
@@ -26,11 +30,17 @@ switch ($action) {
             $medicare = $_POST['medicare'];
             $role = $_POST['role'];
 
+            $stmt = $conn->prepare("INSERT INTO employee (ID, first_name, last_name, date_of_birth, phone, address, city, province, postal_code, citizenship, email, medicare, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssiisssssis",$id, $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role);
+
+
             if ($stmt->execute()) {
                 echo "New employee created successfully";
             } else {
                 echo "Error: " . $stmt->error;
             }
+
+            echo "ID after incrementing: " . $id;
 
             $stmt->close();
         } else {
@@ -44,8 +54,48 @@ switch ($action) {
             <body>
                 <h1>Create Employee</h1>
                 <form action="?action=create" method="post">
-                    <!-- Your form fields here -->
-                    <button type="submit">Create Employee</button>
+                    <!-- Your form fields with fetched data here -->
+                    
+                        <label for="first_name">First Name: </label>
+                        <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" required><br>
+
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" id="last_name" name="last_name" value="<?php echo $employee['last_name']; ?>" required><br>
+
+                        <label for="date_of_birth">Date of Birth:</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" value="<?php echo $employee['date_of_birth']; ?>" required><br>
+
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" value="<?php echo $employee['email']; ?>" required><br>
+
+                        <label for="phone">Phone:</label>
+                        <input type="text" id="phone" name="phone" value="<?php echo $employee['phone']; ?>" required><br>
+
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" value="<?php echo $employee['address']; ?>" required><br>
+
+                        <label for="city">City:</label>
+                        <input type="text" id="city" name="city" value="<?php echo $employee['city']; ?>" required><br>
+
+                        <label for="province">Province:</label>
+                        <input type="text" id="province" name="province" value="<?php echo $employee['province']; ?>" required><br>
+
+                        <label for="postal_code">Postal Code:</label>
+                        <input type="text" id="postal_code" name="postal_code" value="<?php echo $employee['postal_code']; ?>" required><br>
+
+                        <label for="citizenship">Citizenship:</label>
+                        <input type="text" id="citizenship" name="citizenship" value="<?php echo $employee['citizenship']; ?>" required><br>
+
+                        <label for="medicare">Medicare:</label>
+                        <input type="text" id="medicare" name="medicare" value="<?php echo $employee['medicare']; ?>" required><br>
+
+                        <label for="role">Role:</label>
+                        <input type="text" id="role" name="role" value="<?php echo $employee['role']; ?>" required><br>
+
+                        
+
+
+                    <button type="submit">Update Employee</button>
                 </form>
             </body>
             </html>
@@ -159,6 +209,13 @@ switch ($action) {
         $id = intval($_GET['id']);
 
         // Delete the employee record
+        $sql = "DELETE FROM infection WHERE employee_ID = $id";
+        $result = $conn->query($sql);
+        $sql = "DELETE FROM vaccination WHERE employee_ID = $id";
+        $result = $conn->query($sql);
+        $sql = "DELETE FROM workHistory WHERE employee_ID = $id";
+        $result = $conn->query($sql);
+
         $stmt = $conn->prepare("DELETE FROM employee WHERE ID=?");
         $stmt->bind_param("i", $id);
 
@@ -178,7 +235,7 @@ switch ($action) {
     default:
         $sql = "SELECT * FROM employee";
         $result = $conn->query($sql);
-
+        echo "<a href='?action=create'>Create</a>";
         if ($result->num_rows > 0) {
             echo "<table><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Medicare</th><th>Role</th><th>Action</th></tr>";
             while ($row = $result->fetch_assoc()) {

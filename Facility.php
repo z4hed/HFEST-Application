@@ -5,9 +5,9 @@ include 'ConnectToDB.php'
 <?php
 $tablename = 'facility';
 $query = 'SHOW COLUMNS FROM '. $tablename; 
-$column_names = mysqli_query($conn, $query);
-echo "<table class =\"table\">";
-echo "<tr>";
+$column_names = mysqli_query($conn, $query); 
+echo "<table class =\"table\">"; 
+echo "<tr>"; 
 
 while($row = mysqli_fetch_assoc($column_names)) {
     echo '<th>' . $row['Field'] . '</th>';
