@@ -16,35 +16,262 @@ include 'ConnectToDB.php'
 ?>
 
 <?php
-$tablename = 'facility';
-$query = 'SHOW COLUMNS FROM '. $tablename; 
 
-$column_names = mysqli_query($conn, $query);
-echo "<table class =\"table\">";
-echo "<tr>";
+$action = isset($_GET['action']) ? $_GET['action'] : 'list';
+
+switch ($action) {
+    case 'create':
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Process the submitted form
+
+            $sql = "SELECT max(ID) as max FROM facility";
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            $id = 1+$row["max"];
+
+            
+            
+            $name = $_POST['name'];
+            $address = $_POST['address'];
+            $city = $_POST['city'];
+            $province = $_POST['province'];
+            $postal_code = $_POST['postal_code'];
+            $phone = $_POST['phone'];
+            $web_address = $_POST['web_address'];
+            $type = $_POST['type'];
+            $capacity = $_POST['capacity'];
+            $manager = $_POST['manager'];
+            $current_employee_count = $_POST['current_employee_count'];
+
+            $stmt = $conn->prepare("INSERT INTO employee (id,name, address, city, province, postal_code, phone, web_address, type, capacity, manager, current_employee_count) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("isssssissisi",$id,$name, $address, $city, $province, $postal_code, $phone, $web_address, $type, $capacity, $manager, $current_employee_count);
 
 
-while($row = mysqli_fetch_assoc($column_names)) {
-    echo '<th>' . $row['Field'] . '</th>';
-}
+            if ($stmt->execute()) {
+                echo "New employee created successfully";
+            } else {
+                echo "Error: " . $stmt->error;
+            }
 
-echo '<th> Delete </th>';
+
+            echo "ID after incrementing: " . $id;
 
 
- $query = 'SELECT * FROM '. $tablename;
- $table_data = mysqli_query($conn, $query);
- while ($row = mysqli_fetch_assoc($table_data)) {
-    echo "<tr>";
-    foreach ($row as $value) {
-        echo "<td>" . $value . "</td>";
+            $stmt->close();
+        } else {
+            // Display the form
+            ?>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Create Facility</title>
+            </head>
+            <body>
+                <h1>Create Facility</h1>
+                
+                <!-- Your form fields with fetched data here -->
+                    
+                <form action="?action=create" method="post">
+                    <label for="name">Name: </label>
+                    <input type="text" id="name" name="name" value="<?php echo $employee['name']; ?>" required><br>
+
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" value="<?php echo $employee['address']; ?>" required><br>
+
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" value="<?php echo $employee['city']; ?>" required><br>
+
+                    <label for="province">Province:</label>
+                    <input type="text" id="province" name="province" value="<?php echo $employee['province']; ?>" required><br>
+
+                    <label for="postal_code">Postal Code:</label>
+                    <input type="text" id="postal_code" name="postal_code" value="<?php echo $employee['postal_code']; ?>" required><br>
+
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" value="<?php echo $employee['phone']; ?>" required><br>
+
+                    <label for="web_address">Web Address:</label>
+                    <input type="text" id="web_address" name="web_address" value="<?php echo $employee['web_address']; ?>" required><br>
+
+                    <label for="type">Type:</label>
+                    <input type="text" id="type" name="type" value="<?php echo $employee['type']; ?>" required><br>
+
+                    <label for="capacity">Capacity:</label>
+                    <input type="text" id="capacity" name="capacity" value="<?php echo $employee['capacity']; ?>" required><br>
+
+                    <label for="manager">Manager:</label>
+                    <input type="text" id="manager" name="manager" value="<?php echo $employee['manager']; ?>" required><br>
+
+                    <label for="current_employee_count">Current Employee Count:</label>
+                    <input type="text" id="current_employee_count" name="current_employee_count" value="<?php echo $employee['current_employee_count']; ?>" required><br>
+
+                    <button type="submit">Create Facility</button>
+                </form>
+                        
+
+
+                   
+            </body>
+            </html>
+            <?php
+        }
+        break;
+
+    case 'edit':
+    if (isset($_GET['id'])) {
+        $id = intval($_GET['id']);
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Process the submitted form
+
+            $first_name = $_POST['first_name'];
+            $last_name = $_POST['last_name'];
+            $date_of_birth = $_POST['date_of_birth'];
+            $phone = $_POST['phone'];
+            $address = $_POST['address'];
+            $city = $_POST['city'];
+            $province = $_POST['province'];
+            $postal_code = $_POST['postal_code'];
+            $citizenship = $_POST['citizenship'];
+            $email = $_POST['email'];
+            $medicare = $_POST['medicare'];
+            $role = $_POST['role'];
+            
+            $stmt = $conn->prepare("UPDATE employee SET first_name=?, last_name=?, date_of_birth=?, phone=?, address=?, city=?, province=?, postal_code=?, citizenship=?, email=?, medicare=?, role=? WHERE ID=?");
+            $stmt->bind_param("sssiisssssisi", $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role, $id);
+
+
+            if ($stmt->execute()) {
+                echo "Employee updated successfully";
+            } else {
+                echo "Error: " . $stmt->error;
+            }
+
+            $stmt->close();
+        } else {
+            // Fetch the facility details
+            $stmt = $conn->prepare("SELECT * FROM facility WHERE ID=?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $facility = $result->fetch_assoc();
+
+            // Display the form with fetched details
+            ?>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Edit Facility</title>
+            </head>
+            <body>
+                <h1>Edit Facility</h1>
+                <form action="?action=edit&id=<?php echo $id; ?>" method="post">
+                    <!-- Your form fields with fetched data here -->
+
+                    <label for="name">Name: </label>
+                    <input type="text" id="name" name="name" value="<?php echo $facility['name']; ?>" required><br>
+
+                    <label for="address">Address:</label>
+                    <input type="text" id="address" name="address" value="<?php echo $facility['address']; ?>" required><br>
+
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" value="<?php echo $facility['city']; ?>" required><br>
+
+                    <label for="province">Province:</label>
+                    <input type="text" id="province" name="province" value="<?php echo $facility['province']; ?>" required><br>
+
+                    <label for="postal_code">Postal Code:</label>
+                    <input type="text" id="postal_code" name="postal_code" value="<?php echo $facility['postal_code']; ?>" required><br>
+
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" value="<?php echo $facility['phone']; ?>" required><br>
+
+                    <label for="web_address">Web Address:</label>
+                    <input type="text" id="web_address" name="web_address" value="<?php echo $facility['web_address']; ?>" required><br>
+
+                    <label for="type">Type:</label>
+                    <input type="text" id="type" name="type" value="<?php echo $facility['type']; ?>" required><br>
+
+                    <label for="capacity">Capacity:</label>
+                    <input type="text" id="capacity" name="capacity" value="<?php echo $facility['capacity']; ?>" required><br>
+
+                    <label for="manager">Manager:</label>
+                    <input type="text" id="manager" name="manager" value="<?php echo $facility['manager']; ?>" required><br>
+
+                    <label for="current_employee_count">Current Employee Count:</label>
+                    <input type="text" id="current_employee_count" name="current_employee_count" value="<?php echo $facility['current_employee_count']; ?>" required><br>
+
+                    <button type="submit">Create Facility</button>
+                </form>
+                        
+            </body>
+            </html>
+            <?php
+        }
+    } else {
+        echo "Employee ID is missing";
     }
+    break;
 
+    case 'delete':
+    if (isset($_GET['id'])) {
+        $id = intval($_GET['id']);
 
-    echo "<td> <button class=\"delete-button\" type ='submit' name ='delete' value =''> Delete </button> </td>";
+        // Delete the Facility record
 
-    echo "</tr>";
+        $stmt = $conn->prepare("DELETE FROM facility WHERE ID=?");
+        $stmt->bind_param("i", $id);
+
+        if ($stmt->execute()) {
+            echo "Employee deleted successfully";
+        } else {
+            echo "but Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+    } else {
+        echo "Employee ID is missing";
+    }
+    break;
+
+    case 'list':
+    default:
+    
+    $tablename = 'facility';
+    $query = 'SHOW COLUMNS FROM '. $tablename; 
+    
+    echo "<a href='?action=create' class='edit-button'>create</a>";
+
+    $column_names = mysqli_query($conn, $query);
+    echo "<table class =\"table\">";
+    echo "<tr>";
+    
+    
+    while($row = mysqli_fetch_assoc($column_names)) {
+        echo '<th>' . $row['Field'] . '</th>';
+    }
+    
+    echo '<th> Edit </th>';
+    echo '<th> Delete</th>';
+    
+     $query = 'SELECT * FROM '. $tablename;
+     $table_data = mysqli_query($conn, $query);
+     while ($row = mysqli_fetch_assoc($table_data)) {
+        echo "<tr>";
+        foreach ($row as $value) {
+            echo "<td>" . $value . "</td>";
+        }
+    
+    
+        echo "<td><a href='?action=edit&id=" . $row["ID"] . "' class='edit-button'>Edit</a> </td><td> <a href='?action=delete&id=" . $row["ID"] . "' class='delete-button'>Delete</a></td></tr>";
+    
+        echo "</tr>";
+    }
+    echo "</table>";
+
 }
-echo "</table>";
+//=======================================================
+
 
 // 7. Get details of all the employees currently working in a specific facility. Details include employee’s first-name, last-name, start date of work, date of birth, Medicare card number, telephone-number, address, city, province, postal-code, citizenship, and email address. Results should be displayed sorted in ascending order by role, then by first name, then by last name.
 

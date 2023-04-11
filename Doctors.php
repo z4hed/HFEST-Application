@@ -4,6 +4,7 @@ include 'ConnectToDB.php'
 
 <?php
 
+
         $sql = "SELECT e.first_name AS first_name, e.last_name AS last_name, i.date_of_infection AS date_of_infection, f.name AS facility_name
         FROM employee e
         JOIN infection i ON e.ID = i.employee_ID
@@ -26,6 +27,7 @@ include 'ConnectToDB.php'
         } else {
             echo "0 results";
         }
+        
 
 
 $conn->close();
