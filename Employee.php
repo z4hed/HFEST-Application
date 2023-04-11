@@ -1,35 +1,49 @@
+
+<!-- 8. For a given employee, get the details of all the schedules she/he has been scheduled during a specific period of time. Details include facility name, day of the year, start time and end time. Results should be displayed sorted in ascending order by facility name, then by day of the year, the by start time. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+
+<?php include 'navbar.html'; ?>
 <?php
-include 'ConnectToDB.php'
-?>
 
-<?php
-$tablename = 'employee';
-$query = 'SHOW COLUMNS FROM '. $tablename; 
-$column_names = mysqli_query($conn, $query);
-echo "<table class =\"table\">";
-echo "<tr>";
+        // Your PHP code with the added classes
+        include 'ConnectToDB.php';
 
-while($row = mysqli_fetch_assoc($column_names)) {
-    echo '<th>' . $row['Field'] . '</th>';
-}
+        $tablename = 'employee';
+        $query = 'SHOW COLUMNS FROM '. $tablename; 
+        $column_names = mysqli_query($conn, $query);
+        echo "<table class=\"table\">";
+        echo "<tr>";
 
-echo '<th> Delete </th>';
+        while($row = mysqli_fetch_assoc($column_names)) {
+            echo '<th>' . $row['Field'] . '</th>';
+        }
 
+        echo '<th> Delete </th>';
 
- $query = 'SELECT * FROM '. $tablename;
- $table_data = mysqli_query($conn, $query);
- while ($row = mysqli_fetch_assoc($table_data)) {
-    echo "<tr>";
-    foreach ($row as $value) {
-        echo "<td>" . $value . "</td>";
-    }
+        $query = 'SELECT * FROM '. $tablename;
+        $table_data = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($table_data)) {
+            echo "<tr>";
+            foreach ($row as $value) {
+                echo "<td>" . $value . "</td>";
+            }
 
-    echo "<td> <button type ='submit' name ='delete' value =''> Delete </button> </td>";
-    echo "</tr>";
-}
-echo "</table>";
-
-// 8. For a given employee, get the details of all the schedules she/he has been scheduled during a specific period of time. Details include facility name, day of the year, start time and end time. Results should be displayed sorted in ascending order by facility name, then by day of the year, the by start time.
+            echo "<td> <button class=\"delete-button\" type=\"submit\" name=\"delete\" value=\"\"> Delete </button> </td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+        // 8. For a given employee, get the details of all the schedules she/he has been scheduled during a specific period of time. Details include facility name, day of the year, start time and end time. Results should be displayed sorted in ascending order by facility name, then by day of the year, the by start time.
 
 // $employee_id = 1; // Replace this with the specific employee ID you want to fetch schedules for
 // $start_date = '2020-01-01'; // Replace with the start date of the specific period
@@ -55,3 +69,9 @@ echo "</table>";
 // $stmt->close();
 
 ?>
+
+
+
+</body>
+</html>
+

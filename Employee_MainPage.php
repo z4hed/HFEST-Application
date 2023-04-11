@@ -1,4 +1,17 @@
-<?php
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<?php include 'navbar.html'; ?>
+    <?php
+
 include 'ConnectToDB.php'
 ?>
 
@@ -10,6 +23,7 @@ switch ($action) {
     case 'create':
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process the submitted form
+
             $sql = "SELECT max(ID) as max FROM employee";
             $result = $conn->query($sql);
             $row = $result->fetch_assoc();
@@ -30,6 +44,7 @@ switch ($action) {
             $medicare = $_POST['medicare'];
             $role = $_POST['role'];
 
+
             $stmt = $conn->prepare("INSERT INTO employee (ID, first_name, last_name, date_of_birth, phone, address, city, province, postal_code, citizenship, email, medicare, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("isssiisssssis",$id, $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role);
 
@@ -40,7 +55,9 @@ switch ($action) {
                 echo "Error: " . $stmt->error;
             }
 
+
             echo "ID after incrementing: " . $id;
+
 
             $stmt->close();
         } else {
@@ -54,6 +71,7 @@ switch ($action) {
             <body>
                 <h1>Create Employee</h1>
                 <form action="?action=create" method="post">
+
                     <!-- Your form fields with fetched data here -->
                     
                         <label for="first_name">First Name: </label>
@@ -96,6 +114,7 @@ switch ($action) {
 
 
                     <button type="submit">Update Employee</button>
+
                 </form>
             </body>
             </html>
@@ -109,7 +128,7 @@ switch ($action) {
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process the submitted form
-            
+
             $first_name = $_POST['first_name'];
             $last_name = $_POST['last_name'];
             $date_of_birth = $_POST['date_of_birth'];
@@ -153,6 +172,7 @@ switch ($action) {
                 <h1>Edit Employee</h1>
                 <form action="?action=edit&id=<?php echo $id; ?>" method="post">
                     <!-- Your form fields with fetched data here -->
+
                     
                         <label for="first_name">First Name: </label>
                         <input type="text" id="first_name" name="first_name" value="<?php echo $employee['first_name']; ?>" required><br>
@@ -192,7 +212,6 @@ switch ($action) {
 
                         
 
-
                     <button type="submit">Update Employee</button>
                 </form>
             </body>
@@ -209,6 +228,7 @@ switch ($action) {
         $id = intval($_GET['id']);
 
         // Delete the employee record
+
         $sql = "DELETE FROM infection WHERE employee_ID = $id";
         $result = $conn->query($sql);
         $sql = "DELETE FROM vaccination WHERE employee_ID = $id";
@@ -235,11 +255,14 @@ switch ($action) {
     default:
         $sql = "SELECT * FROM employee";
         $result = $conn->query($sql);
+
         echo "<a href='?action=create'>Create</a>";
+
+
         if ($result->num_rows > 0) {
-            echo "<table><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Medicare</th><th>Role</th><th>Action</th></tr>";
+            echo "<table class=\"table\"><tr><th>ID</th><th>First Name</th><th>Last Name</th><th>Email</th><th>Role</th><th>Action</th></tr>";
             while ($row = $result->fetch_assoc()) {
-                echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["medicare"] . "</td><td>" . $row["role"] . "</td><td><a href='?action=edit&id=" . $row["ID"] . "'>Edit</a> | <a href='?action=delete&id=" . $row["ID"] . "'>Delete</a></td></tr>";
+                echo "<tr><td>" . $row["ID"] . "</td><td>" . $row["first_name"] . "</td><td>" . $row["last_name"] . "</td><td>" . $row["email"] . "</td><td>" . $row["role"] . "</td><td><a href='?action=edit&id=" . $row["ID"] . "' class='edit-button'>Edit</a>  <a href='?action=delete&id=" . $row["ID"] . "' class='delete-button'>Delete</a></td></tr>";
             }
             echo "</table>";
         } else {
@@ -251,3 +274,9 @@ switch ($action) {
 
 $conn->close();
 ?>
+
+
+</body>
+</html>
+
+

@@ -1,13 +1,28 @@
-<?php
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facility</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<?php include 'navbar.html'; ?>
+    <?php
+
 include 'ConnectToDB.php'
 ?>
 
 <?php
 $tablename = 'facility';
 $query = 'SHOW COLUMNS FROM '. $tablename; 
-$column_names = mysqli_query($conn, $query); 
-echo "<table class =\"table\">"; 
-echo "<tr>"; 
+
+$column_names = mysqli_query($conn, $query);
+echo "<table class =\"table\">";
+echo "<tr>";
+
 
 while($row = mysqli_fetch_assoc($column_names)) {
     echo '<th>' . $row['Field'] . '</th>';
@@ -24,7 +39,9 @@ echo '<th> Delete </th>';
         echo "<td>" . $value . "</td>";
     }
 
-    echo "<td> <button type ='submit' name ='delete' value =''> Delete </button> </td>";
+
+    echo "<td> <button class=\"delete-button\" type ='submit' name ='delete' value =''> Delete </button> </td>";
+
     echo "</tr>";
 }
 echo "</table>";
@@ -157,3 +174,9 @@ echo "</table>";
 // $conn->close();
 
 ?>
+
+</body>
+</html>
+
+
+
