@@ -142,7 +142,7 @@ switch ($action) {
 
 
             if ($stmt->execute()) {
-                echo "Employee updated successfully";
+                echo "Facility updated successfully";
             } else {
                 echo "Error: " . $stmt->error;
             }
