@@ -103,7 +103,7 @@ switch ($action) {
                     <label for="manager">Manager:</label>
                     <input type="text" id="manager" name="manager" value="<?php echo $employee['manager']; ?>" required><br>
 
-                    <label for="current_employee_count">Current Employee Count:</label>
+                    <label for="current_employee_count">Current employee Count:</label>
                     <input type="text" id="current_employee_count" name="current_employee_count" value="<?php echo $employee['current_employee_count']; ?>" required><br>
 
                     <button type="submit">Create Facility</button>
