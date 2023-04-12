@@ -136,7 +136,7 @@ switch ($action) {
             $current_employee_count = $_POST['current_employee_count'];
 
             $stmt = $conn->prepare("UPDATE facility SET name=?, address=?, city=?, province=?, postal_code=?, phone=?, web_address=?, type=?, capacity=?, manager=?, current_employee_count=? WHERE ID=?");
-            $stmt->bind_param("isssssissisi",$name, $address, $city, $province, $postal_code, $phone, $web_address, $type, $capacity, $manager, $current_employee_count,$id);
+            $stmt->bind_param("sssssissisii",$name, $address, $city, $province, $postal_code, $phone, $web_address, $type, $capacity, $manager, $current_employee_count,$id);
 
             if ($stmt->execute()) {
                 echo "Facility updated successfully";
