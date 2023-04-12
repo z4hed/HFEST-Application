@@ -29,7 +29,6 @@ switch ($action) {
             $row = $result->fetch_assoc();
             $id = 1+$row["max"];
 
-            echo "ID after incrementing: " . $id;
             
             $name = $_POST['name'];
             $address = $_POST['address'];
@@ -46,7 +45,7 @@ switch ($action) {
             $stmt = $conn->prepare("INSERT INTO facility (ID,name, address, city, province, postal_code, phone, web_address, type, capacity, manager, current_employee_count) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("isssssissisi",$id,$name, $address, $city, $province, $postal_code, $phone, $web_address, $type, $capacity, $manager, $current_employee_count);
 
-            echo "ID after incrementing: " . $id;
+            
 
             if ($stmt->execute()) {
                 echo "New Facility created successfully";
@@ -55,7 +54,6 @@ switch ($action) {
             }
 
 
-            echo "ID after incrementing: " . $id;
 
 
             $stmt->close();

@@ -256,7 +256,7 @@ switch ($action) {
         $sql = "SELECT * FROM employee";
         $result = $conn->query($sql);
 
-        echo "<a href='?action=create'>Create</a>";
+        echo "<a href='?action=create' class='edit-button'>Create</a>";
 
 
         if ($result->num_rows > 0) {
