@@ -29,7 +29,7 @@ switch ($action) {
             $row = $result->fetch_assoc();
             $id = 1+$row["max"];
 
-            
+            echo "ID after incrementing: " . $id;
             
             $name = $_POST['name'];
             $address = $_POST['address'];
@@ -43,12 +43,13 @@ switch ($action) {
             $manager = $_POST['manager'];
             $current_employee_count = $_POST['current_employee_count'];
 
-            $stmt = $conn->prepare("INSERT INTO employee (id,name, address, city, province, postal_code, phone, web_address, type, capacity, manager, current_employee_count) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO facility (ID,name, address, city, province, postal_code, phone, web_address, type, capacity, manager, current_employee_count) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             $stmt->bind_param("isssssissisi",$id,$name, $address, $city, $province, $postal_code, $phone, $web_address, $type, $capacity, $manager, $current_employee_count);
 
+            echo "ID after incrementing: " . $id;
 
             if ($stmt->execute()) {
-                echo "New employee created successfully";
+                echo "New Facility created successfully";
             } else {
                 echo "Error: " . $stmt->error;
             }
@@ -124,22 +125,20 @@ switch ($action) {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Process the submitted form
 
-            $first_name = $_POST['first_name'];
-            $last_name = $_POST['last_name'];
-            $date_of_birth = $_POST['date_of_birth'];
-            $phone = $_POST['phone'];
+            $name = $_POST['name'];
             $address = $_POST['address'];
             $city = $_POST['city'];
             $province = $_POST['province'];
             $postal_code = $_POST['postal_code'];
-            $citizenship = $_POST['citizenship'];
-            $email = $_POST['email'];
-            $medicare = $_POST['medicare'];
-            $role = $_POST['role'];
-            
-            $stmt = $conn->prepare("UPDATE employee SET first_name=?, last_name=?, date_of_birth=?, phone=?, address=?, city=?, province=?, postal_code=?, citizenship=?, email=?, medicare=?, role=? WHERE ID=?");
-            $stmt->bind_param("sssiisssssisi", $first_name, $last_name, $date_of_birth, $phone, $address, $city, $province, $postal_code, $citizenship, $email, $medicare, $role, $id);
+            $phone = $_POST['phone'];
+            $web_address = $_POST['web_address'];
+            $type = $_POST['type'];
+            $capacity = $_POST['capacity'];
+            $manager = $_POST['manager'];
+            $current_employee_count = $_POST['current_employee_count'];
 
+            $stmt = $conn->prepare("UPDATE facility SET name=?, address=?, city=?, province=?, postal_code=?, phone=?, web_address=?, type=?, capacity=?, manager=?, current_employee_count=? WHERE ID=?");
+            $stmt->bind_param("isssssissisi",$name, $address, $city, $province, $postal_code, $phone, $web_address, $type, $capacity, $manager, $current_employee_count,$id);
 
             if ($stmt->execute()) {
                 echo "Facility updated successfully";
@@ -201,7 +200,7 @@ switch ($action) {
                     <label for="current_employee_count">Current Employee Count:</label>
                     <input type="text" id="current_employee_count" name="current_employee_count" value="<?php echo $facility['current_employee_count']; ?>" required><br>
 
-                    <button type="submit">Create Facility</button>
+                    <button type="submit">Edit Facility</button>
                 </form>
                         
             </body>
